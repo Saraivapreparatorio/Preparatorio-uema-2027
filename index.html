@@ -1,68 +1,148 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Projeto Engenharia Civil 2027</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #ffe6f2;
-      color: #333;
-      padding: 20px;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #ff4da6;
-    }
-    .progress-bar {
-      width: 100%;
-      background: #eee;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-    .progress {
-      height: 20px;
-      width: 30%;
-      background: #ff66b2;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Projeto Engenharia Civil 2027</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #ffe6f2;
+  color: #333;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+  color: #ff4da6;
+}
+
+button {
+  background: #ff66b2;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+input {
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.progress-bar {
+  width: 100%;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress {
+  height: 20px;
+  background: #ff66b2;
+  width: 0%;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h1>✨ Engenharia Civil 2027 ✨</h1>
-    <p>Futura engenheira civil 💗 apaixonada por astronomia 🌌</p>
-    <p id="contador"></p>
-  </div>
+<div class="card">
+<h1>✨ Engenharia Civil 2027 ✨</h1>
+<p>Futura engenheira civil 💗</p>
+<p id="contador"></p>
+</div>
 
-  <div class="card">
-    <h2>📊 Progresso</h2>
-    <div class="progress-bar">
-      <div class="progress"></div>
-    </div>
-  </div>
+<div class="card">
+<h2>📚 Tarefas de Hoje</h2>
+<input type="text" id="novaTarefa" placeholder="Digite uma tarefa">
+<button onclick="adicionarTarefa()">Adicionar</button>
+<ul id="listaTarefas"></ul>
+</div>
 
-  <div class="card">
-    <h2>📐 Fórmulas Importantes</h2>
-    <p>Área do círculo: A = πr²</p>
-    <p>Teorema de Pitágoras: a² = b² + c²</p>
-    <p>Força: F = m.a</p>
-  </div>
+<div class="card">
+<h2>⏱ Horas Estudadas</h2>
+<input type="number" id="horas" placeholder="Horas hoje">
+<button onclick="registrarHoras()">Registrar</button>
+<p>Total acumulado: <span id="totalHoras">0</span> horas</p>
+</div>
 
-  <script>
-    const dataProva = new Date("2027-11-30");
-    const hoje = new Date();
-    const dias = Math.ceil((dataProva - hoje) / (1000 * 60 * 60 * 24));
-    document.getElementById("contador").innerText =
-      dias + " dias para o PAES 2027 🚀";
-  </script>
+<div class="card">
+<h2>📊 Progresso</h2>
+<div class="progress-bar">
+<div class="progress" id="barraProgresso"></div>
+</div>
+</div>
+
+<script>
+const dataProva = new Date("2027-11-30");
+const hoje = new Date();
+const dias = Math.ceil((dataProva - hoje) / (1000 * 60 * 60 * 24));
+document.getElementById("contador").innerText =
+dias + " dias para o PAES 2027 🚀";
+
+// CARREGAR DADOS SALVOS
+let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+let totalHoras = parseFloat(localStorage.getItem("totalHoras")) || 0;
+
+function salvar() {
+  localStorage.setItem("tarefas", JSON.stringify(tarefas));
+  localStorage.setItem("totalHoras", totalHoras);
+}
+
+function renderizar() {
+  const lista = document.getElementById("listaTarefas");
+  lista.innerHTML = "";
+  tarefas.forEach((t, index) => {
+    lista.innerHTML += `<li>
+      <input type="checkbox" ${t.feita ? "checked" : ""} 
+      onchange="marcar(${index})"> ${t.nome}
+    </li>`;
+  });
+
+  document.getElementById("totalHoras").innerText = totalHoras;
+
+  let progresso = Math.min((totalHoras / 1000) * 100, 100);
+  document.getElementById("barraProgresso").style.width = progresso + "%";
+}
+
+function adicionarTarefa() {
+  const input = document.getElementById("novaTarefa");
+  if (input.value.trim() === "") return;
+  tarefas.push({ nome: input.value, feita: false });
+  input.value = "";
+  salvar();
+  renderizar();
+}
+
+function marcar(index) {
+  tarefas[index].feita = !tarefas[index].feita;
+  salvar();
+}
+
+function registrarHoras() {
+  const horasInput = document.getElementById("horas");
+  const valor = parseFloat(horasInput.value);
+  if (!isNaN(valor)) {
+    totalHoras += valor;
+    horasInput.value = "";
+    salvar();
+    renderizar();
+  }
+}
+
+renderizar();
+</script>
 
 </body>
 </html>
