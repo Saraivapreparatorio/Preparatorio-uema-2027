@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Projeto Engenharia Civil 2027</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffe6f2;
+      color: #333;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #ff4da6;
+    }
+    .progress-bar {
+      width: 100%;
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress {
+      height: 20px;
+      width: 30%;
+      background: #ff66b2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>✨ Engenharia Civil 2027 ✨</h1>
+    <p>Futura engenheira civil 💗 apaixonada por astronomia 🌌</p>
+    <p id="contador"></p>
+  </div>
+
+  <div class="card">
+    <h2>📊 Progresso</h2>
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📐 Fórmulas Importantes</h2>
+    <p>Área do círculo: A = πr²</p>
+    <p>Teorema de Pitágoras: a² = b² + c²</p>
+    <p>Força: F = m.a</p>
+  </div>
+
+  <script>
+    const dataProva = new Date("2027-11-30");
+    const hoje = new Date();
+    const dias = Math.ceil((dataProva - hoje) / (1000 * 60 * 60 * 24));
+    document.getElementById("contador").innerText =
+      dias + " dias para o PAES 2027 🚀";
+  </script>
+
+</body>
+</html>
